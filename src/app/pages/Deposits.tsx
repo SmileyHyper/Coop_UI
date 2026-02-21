@@ -3,14 +3,21 @@ import { Wallet, PiggyBank, TrendingUp, Shield, Gift, ArrowRight } from 'lucide-
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { useEffect, useState } from 'react';
 
 export function Deposits() {
+  const [heroVisible, setHeroVisible] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setHeroVisible(true), 100);
+    return () => clearTimeout(t);
+  }, []);
+
   const savingsProducts = [
     {
       icon: Wallet,
       title: 'Regular Savings',
       description: 'Build your savings with our flexible regular savings account designed for everyday needs.',
-      features: ['Minimum deposit: $100', 'Withdrawable anytime', 'Monthly interest', 'No maintaining balance'],
+      features: ['Minimum deposit: ₱100', 'Withdrawable anytime', 'Monthly interest', 'No maintaining balance'],
       rate: '2.5%',
       gradient: 'from-blue-500 to-blue-600'
     },
@@ -18,7 +25,7 @@ export function Deposits() {
       icon: PiggyBank,
       title: 'Time Deposit',
       description: 'Earn higher returns with our time deposit accounts with fixed terms and guaranteed rates.',
-      features: ['Minimum deposit: $5,000', '6, 12, or 24 month terms', 'Higher interest rates', 'Auto-renewal option'],
+      features: ['Minimum deposit: ₱5,000', '6, 12, or 24 month terms', 'Higher interest rates', 'Auto-renewal option'],
       rate: '4.5% - 6.0%',
       gradient: 'from-green-500 to-green-600'
     },
@@ -26,7 +33,7 @@ export function Deposits() {
       icon: TrendingUp,
       title: 'High-Yield Savings',
       description: 'Maximize your earnings with premium interest rates for higher balance accounts.',
-      features: ['Minimum deposit: $10,000', 'Tiered interest rates', 'Quarterly bonuses', 'Priority service'],
+      features: ['Minimum deposit: ₱10,000', 'Tiered interest rates', 'Quarterly bonuses', 'Priority service'],
       rate: '3.5% - 5.0%',
       gradient: 'from-purple-500 to-purple-600'
     },
@@ -41,64 +48,56 @@ export function Deposits() {
     {
       icon: Gift,
       title: 'Junior Savers',
-      description: 'Start your child\'s financial journey early with our junior savings account.',
-      features: ['Ages 0-17', 'Low minimum deposit: $50', 'Financial literacy programs', 'Parental monitoring'],
+      description: "Start your child's financial journey early with our junior savings account.",
+      features: ['Ages 0-17', 'Low minimum deposit: ₱50', 'Financial literacy programs', 'Parental monitoring'],
       rate: '2.5%',
       gradient: 'from-pink-500 to-pink-600'
     }
   ];
 
   const benefits = [
-    {
-      title: 'PDIC Insured',
-      description: 'All deposits insured up to $250,000 per account',
-      icon: Shield
-    },
-    {
-      title: 'Competitive Rates',
-      description: 'Industry-leading interest rates on all savings products',
-      icon: TrendingUp
-    },
-    {
-      title: 'Easy Access',
-      description: 'Multiple channels for deposits and withdrawals',
-      icon: Wallet
-    },
-    {
-      title: 'Member Rewards',
-      description: 'Exclusive perks and bonuses for loyal members',
-      icon: Gift
-    }
+    { title: 'PDIC Insured', description: 'All deposits insured up to ₱250,000 per account', icon: Shield },
+    { title: 'Competitive Rates', description: 'Industry-leading interest rates on all savings products', icon: TrendingUp },
+    { title: 'Easy Access', description: 'Multiple channels for deposits and withdrawals', icon: Wallet },
+    { title: 'Member Rewards', description: 'Exclusive perks and bonuses for loyal members', icon: Gift },
   ];
 
   return (
     <div className="flex flex-col">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      {/* ── Hero ── */}
+      <section className="relative text-white py-24 sm:py-36 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center"
+          style={{ transition: 'transform 20s linear', transform: heroVisible ? 'scale(1)' : 'scale(1.05)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-primary/60 to-black/70" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <Badge className="mb-4 bg-white/20 text-white border-white/30">Grow Your Wealth</Badge>
-            <h1 className="text-4xl sm:text-5xl font-bold mb-4">Savings & Deposits</h1>
-            <p className="text-lg text-blue-100">
-              Secure your financial future with our range of savings and deposit products. 
+            <Badge className="mb-4 bg-white/20 text-white border-white/30 backdrop-blur-sm">Grow Your Wealth</Badge>
+            <h1 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">Savings & Deposits</h1>
+            <p className="text-xl text-blue-100 leading-relaxed">
+              Secure your financial future with our range of savings and deposit products.
               Enjoy competitive interest rates and the security of cooperative banking.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Savings Products Grid */}
-      <section className="py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Savings Products</h2>
+      {/* ── Savings Products Grid ── */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center opacity-5" />
+        <div className="absolute inset-0 bg-background/95" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Savings Products</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Choose the savings solution that fits your financial goals
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {savingsProducts.map((product, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 rounded-2xl border-border/50">
+              <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
                 <CardHeader>
                   <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${product.gradient} flex items-center justify-center mb-4 shadow-lg`}>
                     <product.icon className="w-7 h-7 text-white" />
@@ -126,24 +125,26 @@ export function Deposits() {
         </div>
       </section>
 
-      {/* Benefits Section */}
-      <section className="py-16 sm:py-24 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Save With Us</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+      {/* ── Benefits ── */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center" />
+        <div className="absolute inset-0 bg-black/75" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-white">Why Save With Us</h2>
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">
               Experience the advantages of cooperative savings
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="border-border/50 rounded-2xl">
+              <Card key={index} className="rounded-2xl bg-white/10 border-white/20 backdrop-blur-md hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4 shadow-lg mx-auto">
-                    <benefit.icon className="w-6 h-6 text-white" />
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4 shadow-lg mx-auto">
+                    <benefit.icon className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-muted-foreground">{benefit.description}</p>
+                  <h3 className="font-semibold mb-2 text-white">{benefit.title}</h3>
+                  <p className="text-sm text-white/70">{benefit.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -151,11 +152,13 @@ export function Deposits() {
         </div>
       </section>
 
-      {/* Interest Rates Table */}
-      <section className="py-16 sm:py-24">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold mb-8 text-center">Current Interest Rates</h2>
-          <Card className="rounded-2xl overflow-hidden">
+      {/* ── Interest Rates Table ── */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center opacity-5" />
+        <div className="absolute inset-0 bg-background/95" />
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center">Current Interest Rates</h2>
+          <Card className="rounded-2xl overflow-hidden bg-card/90 backdrop-blur-sm">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-muted">
@@ -167,48 +170,22 @@ export function Deposits() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <tr>
-                    <td className="p-4">Regular Savings</td>
-                    <td className="p-4">$100</td>
-                    <td className="p-4 text-primary font-medium">2.5% p.a.</td>
-                    <td className="p-4">No lock-in</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Time Deposit (6 months)</td>
-                    <td className="p-4">$5,000</td>
-                    <td className="p-4 text-primary font-medium">4.5% p.a.</td>
-                    <td className="p-4">6 months</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Time Deposit (12 months)</td>
-                    <td className="p-4">$5,000</td>
-                    <td className="p-4 text-primary font-medium">5.5% p.a.</td>
-                    <td className="p-4">12 months</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Time Deposit (24 months)</td>
-                    <td className="p-4">$5,000</td>
-                    <td className="p-4 text-primary font-medium">6.0% p.a.</td>
-                    <td className="p-4">24 months</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">High-Yield Savings</td>
-                    <td className="p-4">$10,000</td>
-                    <td className="p-4 text-primary font-medium">3.5% - 5.0% p.a.</td>
-                    <td className="p-4">No lock-in</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Special Savings</td>
-                    <td className="p-4">$500</td>
-                    <td className="p-4 text-primary font-medium">3.0% p.a.</td>
-                    <td className="p-4">Flexible</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4">Junior Savers</td>
-                    <td className="p-4">$50</td>
-                    <td className="p-4 text-primary font-medium">2.5% p.a.</td>
-                    <td className="p-4">No lock-in</td>
-                  </tr>
+                  {[
+                    ['Regular Savings', '₱100', '2.5% p.a.', 'No lock-in'],
+                    ['Time Deposit (6 months)', '₱5,000', '4.5% p.a.', '6 months'],
+                    ['Time Deposit (12 months)', '₱5,000', '5.5% p.a.', '12 months'],
+                    ['Time Deposit (24 months)', '₱5,000', '6.0% p.a.', '24 months'],
+                    ['High-Yield Savings', '₱10,000', '3.5% - 5.0% p.a.', 'No lock-in'],
+                    ['Special Savings', '₱500', '3.0% p.a.', 'Flexible'],
+                    ['Junior Savers', '₱50', '2.5% p.a.', 'No lock-in'],
+                  ].map(([type, min, rate, term], i) => (
+                    <tr key={i} className="hover:bg-muted/40 transition-colors">
+                      <td className="p-4">{type}</td>
+                      <td className="p-4">{min}</td>
+                      <td className="p-4 text-primary font-medium">{rate}</td>
+                      <td className="p-4">{term}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -219,31 +196,37 @@ export function Deposits() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-24 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="bg-gradient-to-br from-primary via-primary to-secondary text-white border-none shadow-2xl rounded-3xl">
-            <CardContent className="p-12 text-center">
-              <h2 className="text-3xl font-bold mb-4">Start Saving Today</h2>
-              <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-                Open a savings account and take the first step towards financial security. 
-                Our team is here to help you choose the right product.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-white text-primary hover:bg-blue-50 shadow-xl rounded-xl">
-                  <Link to="/membership/apply">
-                    Become a Member
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm rounded-xl">
-                  <Link to="/contact">Get in Touch</Link>
-                </Button>
+      {/* ── CTA ── */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center opacity-5" />
+        <div className="absolute inset-0 bg-background/95" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Card className="bg-gradient-to-br from-primary via-primary to-secondary text-white border-none shadow-2xl rounded-3xl overflow-hidden">
+            <CardContent className="p-12 sm:p-16 text-center relative">
+              <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center opacity-10" />
+              <div className="relative z-10">
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">Start Saving Today</h2>
+                <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
+                  Open a savings account and take the first step towards financial security.
+                  Our team is here to help you choose the right product.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg" className="bg-white text-primary hover:bg-blue-50 shadow-xl rounded-xl font-bold">
+                    <Link to="/membership/apply">
+                      Become a Member
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm rounded-xl">
+                    <Link to="/contact">Get in Touch</Link>
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
       </section>
+
     </div>
   );
 }

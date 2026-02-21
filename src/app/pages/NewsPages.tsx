@@ -1,24 +1,31 @@
-import { Badge, Gift, Percent, Calendar } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge as UIBadge } from '../components/ui/badge';
+import { useEffect, useState } from 'react';
 
 export function Promos() {
+  const [heroVisible, setHeroVisible] = useState(false);
+
+  useEffect(() => {
+    setHeroVisible(true);
+  }, []);
+
   const promos = [
     {
       title: 'New Member Welcome Bonus',
-      description: 'Get $50 bonus credit when you open your first savings account',
+      description: 'Get ₱50 bonus credit when you open your first savings account',
       validity: 'Valid until March 31, 2026',
       image: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?w=800'
     },
     {
       title: 'Zero Interest Promo',
-      description: '0% interest on personal loans up to $5,000 for the first 6 months',
+      description: '0% interest on personal loans up to ₱5,000 for the first 6 months',
       validity: 'Limited slots available',
       image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800'
     },
     {
       title: 'Refer a Friend',
-      description: 'Earn $100 for every successful referral who becomes a member',
+      description: 'Earn ₱100 for every successful referral who becomes a member',
       validity: 'Ongoing promotion',
       image: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800'
     },
@@ -26,8 +33,13 @@ export function Promos() {
 
   return (
     <div className="flex flex-col">
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center"
+          style={{ transition: 'transform 20s linear', transform: heroVisible ? 'scale(1)' : 'scale(1.05)' }}
+        />
+        <div className="absolute inset-0 bg-primary/60" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <UIBadge className="mb-4 bg-white/20 text-white border-white/30">Special Offers</UIBadge>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">Promos & Offers</h1>
           <p className="text-lg text-blue-100">
@@ -64,15 +76,28 @@ export function Promos() {
   );
 }
 
+function HeroSection({ title, subtitle }: { title: string; subtitle: string }) {
+  const [heroVisible, setHeroVisible] = useState(false);
+  useEffect(() => { setHeroVisible(true); }, []);
+  return (
+    <section className="relative bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24 overflow-hidden">
+      <div
+        className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center"
+        style={{ transition: 'transform 20s linear', transform: heroVisible ? 'scale(1)' : 'scale(1.05)' }}
+      />
+      <div className="absolute inset-0 bg-primary/60" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 className="text-4xl font-bold mb-4">{title}</h1>
+        <p className="text-lg text-blue-100">{subtitle}</p>
+      </div>
+    </section>
+  );
+}
+
 export function Careers() {
   return (
     <div className="flex flex-col">
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Careers</h1>
-          <p className="text-lg text-blue-100">Join our team and make a difference</p>
-        </div>
-      </section>
+      <HeroSection title="Careers" subtitle="Join our team and make a difference" />
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-muted-foreground">No current openings. Check back soon!</p>
@@ -85,12 +110,7 @@ export function Careers() {
 export function Bidding() {
   return (
     <div className="flex flex-col">
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Invitation to Bid</h1>
-          <p className="text-lg text-blue-100">Current procurement opportunities</p>
-        </div>
-      </section>
+      <HeroSection title="Invitation to Bid" subtitle="Current procurement opportunities" />
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-muted-foreground">No active bidding opportunities at this time</p>
@@ -103,12 +123,7 @@ export function Bidding() {
 export function Auction() {
   return (
     <div className="flex flex-col">
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4">Auction</h1>
-          <p className="text-lg text-blue-100">Repossessed assets and properties</p>
-        </div>
-      </section>
+      <HeroSection title="Auction" subtitle="Repossessed assets and properties" />
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-muted-foreground">No auction items available currently</p>

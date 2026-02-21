@@ -2,8 +2,16 @@ import { Calendar, MapPin, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
+import { useEffect, useRef, useState } from 'react';
 
 export function NewsEvents() {
+  const [heroVisible, setHeroVisible] = useState(false);
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    setHeroVisible(true);
+  }, []);
+
   const events = [
     {
       title: 'Annual General Assembly 2026',
@@ -51,8 +59,13 @@ export function NewsEvents() {
 
   return (
     <div className="flex flex-col">
-      <section className="bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={heroRef} className="relative bg-gradient-to-br from-primary via-primary to-secondary text-white py-16 sm:py-24 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center"
+          style={{ transition: 'transform 20s linear', transform: heroVisible ? 'scale(1)' : 'scale(1.05)' }}
+        />
+        <div className="absolute inset-0 bg-primary/60" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Badge className="mb-4 bg-white/20 text-white border-white/30">Stay Updated</Badge>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">News & Events</h1>
           <p className="text-lg text-blue-100">

@@ -3,18 +3,18 @@
 :root {
   --font-size: 16px;
   --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  --foreground: oklch(100% 0.00011 271.152);
   --card: #ffffff;
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: #1e3a8a;
-  --primary-foreground: #ffffff;
+  --primary-foreground:rgb(0, 0, 0);
   --secondary: #60a5fa;
   --secondary-foreground: #ffffff;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  --accent: #e0f2fe;
+  --accent:rgb(221, 241, 255);
   --accent-foreground: #1e3a8a;
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
@@ -178,4 +178,6 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+
+  
 }
