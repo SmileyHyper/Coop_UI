@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { CreditCard, Home, Briefcase, GraduationCap, Car, Heart, ArrowRight } from 'lucide-react';
+import { Wallet, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -14,53 +14,47 @@ export function Loans() {
 
   const loanTypes = [
     {
-      icon: CreditCard,
-      title: 'Personal Loan',
-      description: 'Flexible personal loans for any purpose – from medical expenses to special occasions.',
-      features: ['Up to ₱50,000', 'Low interest rates', 'Flexible terms up to 5 years', 'Quick approval'],
-      rate: '5.5% - 8.5%',
-      gradient: 'from-blue-500 to-blue-600'
+      icon: Wallet,
+      title: 'E-Cash Loan',
+      description: 'Flexible cash loan for any purpose. Large loan amounts may require collateral as security.',
+      features: [
+        'No fixed loan limit',
+        'Up to 3% interest rate',
+        'Collateral required for large amounts',
+        'Up to 2 years repayment term',
+      ],
+      rate: 'Up to 3%',
+      gradient: 'from-blue-500 to-blue-600',
+      note: 'Rates & limits subject to change by management.',
     },
     {
-      icon: Home,
-      title: 'Housing Loan',
-      description: 'Make your dream home a reality with our competitive housing loan packages.',
-      features: ['Up to ₱500,000', 'Long-term financing up to 25 years', 'Competitive rates', 'No prepayment penalties'],
-      rate: '4.5% - 6.5%',
-      gradient: 'from-green-500 to-green-600'
+      icon: ShieldCheck,
+      title: 'Guaranteed Loan',
+      description: 'Loan amount based on your fixed deposit. Borrow up to twice your share capital with competitive rates.',
+      features: [
+        'Maximum: Share Capital × 2',
+        'Based on fixed deposit',
+        'Up to 2% interest rate',
+        'Up to 2 years repayment term',
+      ],
+      rate: 'Up to 2%',
+      gradient: 'from-green-500 to-green-600',
+      note: 'Rates & limits subject to change by management.',
     },
     {
-      icon: Briefcase,
-      title: 'Business Loan',
-      description: 'Grow your business with capital designed for entrepreneurs and enterprises.',
-      features: ['Up to ₱200,000', 'Business expansion support', 'Flexible repayment', 'Competitive rates'],
-      rate: '6.0% - 9.0%',
-      gradient: 'from-purple-500 to-purple-600'
+      icon: Zap,
+      title: 'Instant / Emergency Loan',
+      description: 'Quick access to funds when you need them most. Fast approval for urgent and unexpected expenses.',
+      features: [
+        'Up to ₱15,000',
+        'Short-term loan option',
+        'Up to 3 months repayment term',
+        'Minimal requirements',
+      ],
+      rate: 'Short-Term',
+      gradient: 'from-pink-500 to-pink-600',
+      note: 'Rates & limits subject to change by management.',
     },
-    {
-      icon: GraduationCap,
-      title: 'Education Loan',
-      description: 'Invest in your future with educational loans for college and professional studies.',
-      features: ['Up to ₱100,000', 'Deferred payment options', 'Low interest rates', 'Grace period available'],
-      rate: '4.0% - 6.0%',
-      gradient: 'from-yellow-500 to-yellow-600'
-    },
-    {
-      icon: Car,
-      title: 'Vehicle Loan',
-      description: 'Get behind the wheel with our auto financing for new and used vehicles.',
-      features: ['Up to ₱75,000', 'New & used vehicles', 'Competitive rates', 'Fast approval process'],
-      rate: '5.0% - 7.5%',
-      gradient: 'from-red-500 to-red-600'
-    },
-    {
-      icon: Heart,
-      title: 'Emergency Loan',
-      description: 'Quick access to funds when you need them most for unexpected expenses.',
-      features: ['Up to ₱10,000', 'Same-day approval', 'Minimal requirements', 'Short-term options'],
-      rate: '6.5% - 9.5%',
-      gradient: 'from-pink-500 to-pink-600'
-    }
   ];
 
   return (
@@ -84,7 +78,7 @@ export function Loans() {
             <Badge className="mb-4 bg-white/20 text-white border-white/30 backdrop-blur-sm">Financial Solutions</Badge>
             <h1 className="text-5xl sm:text-6xl font-bold mb-6 leading-tight">Loan Products</h1>
             <p className="text-xl text-blue-100 leading-relaxed">
-              Flexible financing solutions tailored to your needs. From personal loans to business expansion,
+              Flexible financing solutions tailored to your needs. From everyday cash needs to emergency funds,
               we have the right loan product for you.
             </p>
           </div>
@@ -98,9 +92,9 @@ export function Loans() {
         <div className="absolute inset-0 bg-background/95" />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {loanTypes.map((loan, index) => (
-              <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
+              <Card key={index} className="hover:shadow-xl transition-all duration-300 hover:-translate-y-1 rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm flex flex-col">
                 <CardHeader>
                   <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${loan.gradient} flex items-center justify-center mb-4 shadow-lg`}>
                     <loan.icon className="w-7 h-7 text-white" />
@@ -110,7 +104,7 @@ export function Loans() {
                   </CardTitle>
                   <Badge variant="secondary" className="w-fit mt-2">{loan.rate} APR</Badge>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4 flex flex-col flex-1">
                   <p className="text-sm text-muted-foreground">{loan.description}</p>
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Key Features:</p>
@@ -123,6 +117,11 @@ export function Loans() {
                       ))}
                     </ul>
                   </div>
+                  {loan.note && (
+                    <p className="text-xs text-muted-foreground/60 italic mt-auto pt-2 border-t border-border/40">
+                      {loan.note}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
             ))}
@@ -204,7 +203,7 @@ export function Loans() {
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm rounded-xl">
+                  <Button asChild size="lg" variant="outline" className="cta-btn-secondary bg-transparent border-white/40 !text-white hover:!text-white hover:bg-white/15 rounded-xl font-semibold px-8 backdrop-blur-sm !bg-transparent">
                     <Link to="/contact">Contact Us</Link>
                   </Button>
                 </div>

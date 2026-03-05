@@ -135,6 +135,109 @@ export function About() {
           </div>
         </div>
       </section>
+{/* ── Testimonials ── */}
+<section className="relative py-20 sm:py-28 overflow-hidden">
+  {/* Background Image */}
+  <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center" />
+
+  {/* Dark Overlay */}
+  <div className="absolute inset-0 bg-black/70" />
+
+  <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center text-white">
+      What Our Members Say
+    </h2>
+
+    <div className="grid md:grid-cols-3 gap-6">
+      {[
+        {
+          name: "Ana Lopez",
+          feedback:
+            "This cooperative helped me grow my small business through affordable loans and excellent support.",
+        },
+        {
+          name: "Michael Cruz",
+          feedback:
+            "Their digital services make managing my savings easy and convenient.",
+        },
+        {
+          name: "Sofia Reyes",
+          feedback:
+            "I truly feel valued as a member. The service is always friendly and professional.",
+        },
+      ].map((item, index) => (
+        <Card
+          key={index}
+          className="rounded-2xl bg-white/10 border-white/20 backdrop-blur-md hover:bg-white/20 transition-all duration-300"
+        >
+          <CardContent className="p-6 text-white">
+            <p className="mb-4 italic text-white/80">
+              “{item.feedback}”
+            </p>
+            <h4 className="font-semibold">{item.name}</h4>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
+      {/* ── Organizational Structure ── */}
+      <section className="relative py-20 sm:py-28 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center opacity-10" />
+        <div className="absolute inset-0 bg-background/95" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center">
+            Organizational Structure
+          </h2>
+
+          <div className="space-y-8">
+
+            <Card className="rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <h3 className="font-semibold text-lg mb-2">General Assembly</h3>
+                <p className="text-muted-foreground text-sm">
+                  The highest governing body composed of all cooperative members.
+                  Responsible for major decisions and policy approvals.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
+              <CardContent className="p-8 text-center">
+                <h3 className="font-semibold text-lg mb-2">Board of Directors</h3>
+                <p className="text-muted-foreground text-sm">
+                  Provides strategic leadership, policy direction, and ensures
+                  the cooperative operates according to its mission and vision.
+                </p>
+              </CardContent>
+            </Card>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <h3 className="font-semibold mb-2">Management Team</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Oversees daily operations, financial management,
+                    and implementation of board policies.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border-border/50 bg-card/90 backdrop-blur-sm">
+                <CardContent className="p-6 text-center">
+                  <h3 className="font-semibold mb-2">Operational Staff</h3>
+                  <p className="text-muted-foreground text-sm">
+                    Handles member services, loan processing,
+                    transactions, and administrative functions.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       {/* ── Board Members ── */}
       <section className="relative py-20 sm:py-28 overflow-hidden">

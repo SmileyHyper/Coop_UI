@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Calculator, Calendar, Percent, TrendingUp } from 'lucide-react';
+import { Calculator, Calendar, Percent, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,25 +10,95 @@ import { Badge } from '../components/ui/badge';
 const formatPeso = (amount: number) =>
   '₱' + amount.toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+const ROWS_PER_PAGE = 12;
+
 export function LoanCalculator() {
-  const [loanAmount, setLoanAmount] = useState<number>(50000);
-  const [interestRate, setInterestRate] = useState<number>(6.5);
+  const [loanAmount, setLoanAmount] = useState<number>(10000);
+  const [interestRate, setInterestRate] = useState<number>(2.0);
   const [loanTerm, setLoanTerm] = useState<number>(12);
-  const [loanType, setLoanType] = useState<string>('personal');
+  const [loanType, setLoanType] = useState<string>('ecash');
   const [heroVisible, setHeroVisible] = useState(false);
+  const [schedPage, setSchedPage] = useState(1);
 
   useEffect(() => {
     const t = setTimeout(() => setHeroVisible(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const loanTypeRates: { [key: string]: { min: number; max: number } } = {
-    personal:  { min: 5.5, max: 8.5 },
-    housing:   { min: 4.5, max: 6.5 },
-    business:  { min: 6.0, max: 9.0 },
-    education: { min: 4.0, max: 6.0 },
-    vehicle:   { min: 5.0, max: 7.5 },
-    emergency: { min: 6.5, max: 9.5 },
+  // Reset to page 1 whenever loan params change
+  useEffect(() => { setSchedPage(1); }, [loanAmount, interestRate, loanTerm, loanType]);
+
+  const loanTypeConfig: {
+    [key: string]: {
+      label: string;
+      minRate: number;
+      maxRate: number;
+      maxMonths: number;
+      maxAmount: number | null;
+      amountStep: number;
+      amountSliderMax: number;
+      note: string;
+    };
+  } = {
+    ecash: {
+      label: 'E-Cash Loan',
+      minRate: 0.1,
+      maxRate: 3.0,
+      maxMonths: 24,
+      maxAmount: null,
+      amountStep: 5000,
+      amountSliderMax: 500000,
+      note: 'No fixed loan limit. Collateral may be required for large amounts.',
+    },
+    guaranteed: {
+      label: 'Guaranteed Loan',
+      minRate: 0.1,
+      maxRate: 2.0,
+      maxMonths: 24,
+      maxAmount: null,
+      amountStep: 5000,
+      amountSliderMax: 500000,
+      note: 'Maximum is Share Capital × 2. Based on your fixed deposit.',
+    },
+    emergency: {
+      label: 'Instant / Emergency Loan',
+      minRate: 0.1,
+      maxRate: 9.5,
+      maxMonths: 3,
+      maxAmount: 15000,
+      amountStep: 500,
+      amountSliderMax: 15000,
+      note: 'Maximum loan amount is ₱15,000. Term up to 3 months only.',
+    },
+  };
+
+  const config = loanTypeConfig[loanType];
+
+  const handleLoanTypeChange = (value: string) => {
+    setLoanType(value);
+    const cfg = loanTypeConfig[value];
+    setInterestRate(cfg.maxRate);
+    setLoanTerm((prev) => Math.min(prev, cfg.maxMonths));
+    if (cfg.maxAmount !== null) {
+      setLoanAmount((prev) => Math.min(prev, cfg.maxAmount!));
+    }
+  };
+
+  const handleInterestRateChange = (value: number) => {
+    const clamped = Math.min(config.maxRate, Math.max(config.minRate, value));
+    setInterestRate(parseFloat(clamped.toFixed(1)));
+  };
+
+  const handleLoanAmountChange = (value: number) => {
+    if (config.maxAmount !== null) {
+      setLoanAmount(Math.min(value, config.maxAmount));
+    } else {
+      setLoanAmount(value);
+    }
+  };
+
+  const handleLoanTermChange = (value: number) => {
+    setLoanTerm(Math.min(value, config.maxMonths));
   };
 
   const calculateMonthlyPayment = () => {
@@ -44,20 +114,32 @@ export function LoanCalculator() {
   const totalPayment   = monthlyPayment * loanTerm;
   const totalInterest  = totalPayment - loanAmount;
 
-  const generateAmortizationSchedule = () => {
+  // Generate FULL schedule (all months)
+  const generateFullSchedule = () => {
     const schedule = [];
     let balance = loanAmount;
     const monthlyRate = interestRate / 100 / 12;
-    for (let month = 1; month <= Math.min(loanTerm, 12); month++) {
-      const interestPayment   = balance * monthlyRate;
-      const principalPayment  = monthlyPayment - interestPayment;
+    for (let month = 1; month <= loanTerm; month++) {
+      const interestPayment  = balance * monthlyRate;
+      const principalPayment = monthlyPayment - interestPayment;
       balance -= principalPayment;
-      schedule.push({ month, payment: monthlyPayment, principal: principalPayment, interest: interestPayment, balance: Math.max(0, balance) });
+      schedule.push({
+        month,
+        payment: monthlyPayment,
+        principal: principalPayment,
+        interest: interestPayment,
+        balance: Math.max(0, balance),
+      });
     }
     return schedule;
   };
 
-  const schedule = generateAmortizationSchedule();
+  const fullSchedule = generateFullSchedule();
+  const totalPages   = Math.ceil(fullSchedule.length / ROWS_PER_PAGE);
+  const pagedRows    = fullSchedule.slice((schedPage - 1) * ROWS_PER_PAGE, schedPage * ROWS_PER_PAGE);
+
+  const startMonth = (schedPage - 1) * ROWS_PER_PAGE + 1;
+  const endMonth   = Math.min(schedPage * ROWS_PER_PAGE, loanTerm);
 
   return (
     <div className="flex flex-col">
@@ -97,28 +179,21 @@ export function LoanCalculator() {
               </CardHeader>
               <CardContent className="space-y-6">
 
+                {/* Loan Type */}
                 <div className="space-y-2">
                   <Label>Loan Type</Label>
-                  <Select value={loanType} onValueChange={(value) => {
-                    setLoanType(value);
-                    const rates = loanTypeRates[value];
-                    setInterestRate(parseFloat(((rates.min + rates.max) / 2).toFixed(1)));
-                  }}>
+                  <Select value={loanType} onValueChange={handleLoanTypeChange}>
                     <SelectTrigger className="rounded-lg"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="personal">Personal Loan</SelectItem>
-                      <SelectItem value="housing">Housing Loan</SelectItem>
-                      <SelectItem value="business">Business Loan</SelectItem>
-                      <SelectItem value="education">Education Loan</SelectItem>
-                      <SelectItem value="vehicle">Vehicle Loan</SelectItem>
-                      <SelectItem value="emergency">Emergency Loan</SelectItem>
+                      <SelectItem value="ecash">E-Cash Loan</SelectItem>
+                      <SelectItem value="guaranteed">Guaranteed Loan</SelectItem>
+                      <SelectItem value="emergency">Instant / Emergency Loan</SelectItem>
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-muted-foreground">
-                    Rate range: {loanTypeRates[loanType].min}% – {loanTypeRates[loanType].max}%
-                  </p>
+                  <p className="text-xs text-muted-foreground">{config.note}</p>
                 </div>
 
+                {/* Loan Amount */}
                 <div className="space-y-2">
                   <Label htmlFor="loanAmount">Loan Amount (₱)</Label>
                   <div className="relative">
@@ -127,17 +202,31 @@ export function LoanCalculator() {
                       id="loanAmount"
                       type="number"
                       value={loanAmount}
-                      onChange={(e) => setLoanAmount(Number(e.target.value))}
+                      onChange={(e) => handleLoanAmountChange(Number(e.target.value))}
                       className="pl-8 rounded-lg"
-                      min="5000"
-                      step="5000"
+                      min="1000"
+                      max={config.maxAmount ?? undefined}
+                      step={config.amountStep}
                     />
                   </div>
-                  <input type="range" min="5000" max="5000000" step="5000" value={loanAmount}
-                    onChange={(e) => setLoanAmount(Number(e.target.value))} className="w-full accent-primary" />
-                  <p className="text-xs text-muted-foreground">{formatPeso(loanAmount)}</p>
+                  <input
+                    type="range"
+                    min="1000"
+                    max={config.maxAmount ?? config.amountSliderMax}
+                    step={config.amountStep}
+                    value={loanAmount}
+                    onChange={(e) => handleLoanAmountChange(Number(e.target.value))}
+                    className="w-full accent-primary"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {formatPeso(loanAmount)}
+                    {config.maxAmount !== null && (
+                      <span className="ml-2 text-orange-500 font-medium">Max: {formatPeso(config.maxAmount)}</span>
+                    )}
+                  </p>
                 </div>
 
+                {/* Interest Rate */}
                 <div className="space-y-2">
                   <Label htmlFor="interestRate">Interest Rate (% per annum)</Label>
                   <div className="relative">
@@ -146,15 +235,29 @@ export function LoanCalculator() {
                       id="interestRate"
                       type="number"
                       value={interestRate}
-                      onChange={(e) => setInterestRate(Number(e.target.value))}
+                      onChange={(e) => handleInterestRateChange(Number(e.target.value))}
+                      onBlur={(e) => handleInterestRateChange(Number(e.target.value))}
                       className="pl-9 rounded-lg"
-                      min="0" max="20" step="0.1"
+                      min={config.minRate}
+                      max={config.maxRate}
+                      step="0.1"
                     />
                   </div>
-                  <input type="range" min="0" max="20" step="0.1" value={interestRate}
-                    onChange={(e) => setInterestRate(Number(e.target.value))} className="w-full accent-primary" />
+                  <input
+                    type="range"
+                    min={config.minRate}
+                    max={config.maxRate}
+                    step="0.1"
+                    value={interestRate}
+                    onChange={(e) => handleInterestRateChange(Number(e.target.value))}
+                    className="w-full accent-primary"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Maximum rate for this loan type: <span className="font-medium">{config.maxRate}%</span>
+                  </p>
                 </div>
 
+                {/* Loan Term */}
                 <div className="space-y-2">
                   <Label htmlFor="loanTerm">Loan Term (months)</Label>
                   <div className="relative">
@@ -163,14 +266,24 @@ export function LoanCalculator() {
                       id="loanTerm"
                       type="number"
                       value={loanTerm}
-                      onChange={(e) => setLoanTerm(Number(e.target.value))}
+                      onChange={(e) => handleLoanTermChange(Number(e.target.value))}
                       className="pl-9 rounded-lg"
-                      min="6" max="300"
+                      min="1"
+                      max={config.maxMonths}
                     />
                   </div>
-                  <input type="range" min="6" max="300" value={loanTerm}
-                    onChange={(e) => setLoanTerm(Number(e.target.value))} className="w-full accent-primary" />
-                  <p className="text-xs text-muted-foreground">{(loanTerm / 12).toFixed(1)} years</p>
+                  <input
+                    type="range"
+                    min="1"
+                    max={config.maxMonths}
+                    value={loanTerm}
+                    onChange={(e) => handleLoanTermChange(Number(e.target.value))}
+                    className="w-full accent-primary"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {(loanTerm / 12).toFixed(1)} years
+                    <span className="ml-2 text-orange-500 font-medium">Max: {config.maxMonths} months</span>
+                  </p>
                 </div>
 
                 <Button className="w-full rounded-lg bg-gradient-to-r from-primary to-secondary font-semibold">
@@ -208,12 +321,13 @@ export function LoanCalculator() {
                 <CardHeader><CardTitle>Payment Summary</CardTitle></CardHeader>
                 <CardContent className="space-y-0">
                   {[
-                    { label: 'Loan Amount',     value: formatPeso(loanAmount),     highlight: false },
-                    { label: 'Interest Rate',   value: `${interestRate}% p.a.`,     highlight: false },
-                    { label: 'Loan Term',       value: `${loanTerm} months`,        highlight: false },
-                    { label: 'Monthly Payment', value: formatPeso(monthlyPayment),  highlight: true  },
-                    { label: 'Total Interest',  value: formatPeso(totalInterest),   highlight: false },
-                    { label: 'Total Payment',   value: formatPeso(totalPayment),    highlight: false },
+                    { label: 'Loan Type',       value: config.label,               highlight: false },
+                    { label: 'Loan Amount',      value: formatPeso(loanAmount),     highlight: false },
+                    { label: 'Interest Rate',    value: `${interestRate}% p.a.`,    highlight: false },
+                    { label: 'Loan Term',        value: `${loanTerm} months`,       highlight: false },
+                    { label: 'Monthly Payment',  value: formatPeso(monthlyPayment), highlight: true  },
+                    { label: 'Total Interest',   value: formatPeso(totalInterest),  highlight: false },
+                    { label: 'Total Payment',    value: formatPeso(totalPayment),   highlight: false },
                   ].map((row, i, arr) => (
                     <div key={i} className={`flex justify-between py-3 ${i < arr.length - 1 ? 'border-b border-border' : ''}`}>
                       <span className="text-muted-foreground">{row.label}</span>
@@ -234,7 +348,59 @@ export function LoanCalculator() {
         <div className="absolute inset-0 bg-[url('/src/images/bghd.jpg')] bg-cover bg-center" />
         <div className="absolute inset-0 bg-black/75" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-10 text-center text-white">Amortization Schedule (First Year)</h2>
+
+          {/* Header row: title + top pagination */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-white">Amortization Schedule</h2>
+              <p className="text-white/60 text-sm mt-1">
+                {loanTerm} month{loanTerm !== 1 ? 's' : ''} total &mdash; showing months {startMonth}–{endMonth}
+              </p>
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSchedPage((p) => Math.max(1, p - 1))}
+                  disabled={schedPage === 1}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:opacity-40 rounded-lg"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Prev
+                </Button>
+
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setSchedPage(page)}
+                      className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${
+                        page === schedPage
+                          ? 'bg-white text-black'
+                          : 'bg-white/10 text-white hover:bg-white/20'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSchedPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={schedPage === totalPages}
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:opacity-40 rounded-lg"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              </div>
+            )}
+          </div>
+
           <Card className="rounded-2xl overflow-hidden bg-white/10 border-white/20 backdrop-blur-md">
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -248,9 +414,9 @@ export function LoanCalculator() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10">
-                  {schedule.map((row) => (
+                  {pagedRows.map((row) => (
                     <tr key={row.month} className="hover:bg-white/10 transition-colors">
-                      <td className="p-4 text-white/90">{row.month}</td>
+                      <td className="p-4 text-white/90 font-medium">{row.month}</td>
                       <td className="text-right p-4 text-white/90">{formatPeso(row.payment)}</td>
                       <td className="text-right p-4 text-green-400 font-medium">{formatPeso(row.principal)}</td>
                       <td className="text-right p-4 text-orange-400 font-medium">{formatPeso(row.interest)}</td>
@@ -261,11 +427,34 @@ export function LoanCalculator() {
               </table>
             </div>
           </Card>
-          {loanTerm > 12 && (
-            <p className="text-sm text-white/60 text-center mt-4">
-              Showing first 12 months of {loanTerm}-month loan term
-            </p>
+
+          {/* Bottom pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSchedPage((p) => Math.max(1, p - 1))}
+                disabled={schedPage === 1}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:opacity-40 rounded-lg"
+              >
+                <ChevronLeft className="w-4 h-4 mr-1" />
+                Prev
+              </Button>
+              <span className="text-white/60 text-sm">Page {schedPage} of {totalPages}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSchedPage((p) => Math.min(totalPages, p + 1))}
+                disabled={schedPage === totalPages}
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:opacity-40 rounded-lg"
+              >
+                Next
+                <ChevronRight className="w-4 h-4 ml-1" />
+              </Button>
+            </div>
           )}
+
         </div>
       </section>
 

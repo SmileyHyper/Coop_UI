@@ -55,8 +55,9 @@ export function Layout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header with glassmorphism */}
-     <header className="sticky top-0 z-50 backdrop-blur-md bg-black/20 border-b border-white/10"> <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Header - solid/opaque */}
+      <header className="sticky top-0 z-50 bg-background border-b border-border shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3">

@@ -121,7 +121,7 @@ export function MembershipClassifications() {
             <Button asChild size="lg" className="bg-white text-primary hover:bg-blue-50 shadow-xl rounded-xl font-bold">
               <Link to="/contact">Contact Us</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-xl">
+            <Button asChild size="lg" variant="outline" className="cta-btn-primary bg-white text-primary hover:bg-blue-50 shadow-xl rounded-xl font-bold px-8">
               <Link to="/membership/apply">Apply Now</Link>
             </Button>
           </div>

@@ -218,7 +218,6 @@ export function Home() {
         .arrow-icon { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
         a:hover .arrow-icon { transform: translateX(5px); }
 
-        /* Ripple on service card click */
         .service-card { position: relative; overflow: hidden; }
       `}</style>
 
@@ -232,8 +231,6 @@ export function Home() {
           <Particles />
 
           <div className="relative z-10 flex items-center justify-between min-h-screen px-4 sm:px-6 lg:px-16 pt-20">
-
-            {/* Left */}
             <div className={`max-w-2xl transition-all duration-1000 ${heroVisible ? 'opacity-100' : 'opacity-0'}`}>
               <div className="hero-badge inline-flex items-center gap-2 mb-7 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
                 <div className="badge-dot w-2.5 h-2.5 bg-green-400" />
@@ -245,16 +242,14 @@ export function Home() {
                 <br />
                 Your Cooperative.
                 <br />
-                <span
-                  style={{
-                    background: 'linear-gradient(135deg, #60a5fa 0%, #67e8f9 50%, #a78bfa 100%)',
-                    backgroundSize: '200%',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    animation: 'shimmer 4s linear infinite',
-                  }}
-                >
+                <span style={{
+                  background: 'linear-gradient(135deg, #60a5fa 0%, #67e8f9 50%, #a78bfa 100%)',
+                  backgroundSize: '200%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  animation: 'shimmer 4s linear infinite',
+                }}>
                   Your Future.
                 </span>
               </h1>
@@ -275,7 +270,6 @@ export function Home() {
               </div>
             </div>
 
-            {/* Right image */}
             <div className="hero-image hidden lg:flex items-center justify-center flex-1 pl-10">
               <img
                 src="/src/images/header.png"
@@ -286,7 +280,6 @@ export function Home() {
             </div>
           </div>
 
-          {/* Scroll hint */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 scroll-hint flex flex-col items-center gap-1 opacity-60">
             <span className="text-white text-xs tracking-widest uppercase">Scroll</span>
             <ChevronDown className="w-5 h-5 text-white" />
@@ -296,7 +289,12 @@ export function Home() {
         {/* ── STATS ── */}
         <section className="relative -mt-20 z-20" ref={statsRef}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <Card className="backdrop-blur-xl bg-card/90 border-border/40 shadow-2xl rounded-2xl overflow-hidden">
+          <Card
+  className="backdrop-blur-xl border-border/40 shadow-2xl rounded-2xl overflow-hidden"
+  style={{
+    background: 'linear-gradient(135deg, rgba(219, 254, 254, 0.85) 0%, rgba(255,255,255,0.90) 100%), url("/src/images/bghd.jpg") center/cover no-repeat',
+  }}
+>
               <CardContent className="p-0">
                 <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-border/30">
                   {stats.map((stat, i) => (
@@ -337,15 +335,19 @@ export function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((f, i) => (
                 <Card
-                  key={i}
-                  className="feature-card border-border/40 rounded-2xl group cursor-default"
-                  style={{
-                    animation: featuresInView ? `cardReveal 0.6s ${0.1 + i * 0.1}s both ease-out` : 'none',
-                    opacity: featuresInView ? undefined : 0,
-                  }}
-                >
+                key={i}
+                className="feature-card border-border/40 rounded-2xl group cursor-default overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.88) 100%), url("/src/images/bghd.jpg") center/cover no-repeat',
+                  animation: featuresInView ? `cardReveal 0.6s ${0.1 + i * 0.1}s both ease-out` : 'none',
+                  opacity: featuresInView ? undefined : 0,
+                }}
+              >
                   <CardContent className="p-7">
-                    <div className="w-13 h-13 w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-5 shadow-lg group-hover:shadow-primary/40 transition-shadow duration-300 card-icon">
+                    <div
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:shadow-primary/40 transition-shadow duration-300 card-icon"
+                      style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #60a5fa 100%)' }}
+                    >
                       <f.icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="font-bold text-base mb-2">{f.title}</h3>
@@ -375,8 +377,9 @@ export function Home() {
               {services.map((s, i) => (
                 <Link key={i} to={s.link} className="group">
                   <Card
-                    className="service-card h-full border-border/40 rounded-2xl"
+                    className="service-card h-full border-border/40 rounded-2xl overflow-hidden"
                     style={{
+                      background: 'linear-gradient(135deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.88) 100%), url("/src/images/bghd.jpg") center/cover no-repeat',
                       animation: servicesInView ? `cardReveal 0.6s ${0.1 + i * 0.12}s both ease-out` : 'none',
                       opacity: servicesInView ? undefined : 0,
                     }}
@@ -406,15 +409,14 @@ export function Home() {
         <section className="py-24 sm:py-36" ref={ctaRef}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Card
-              className="border-none shadow-2xl rounded-3xl overflow-hidden"
+              className="border-none shadow-2xl rounded-3xl overflow-hidden !bg-transparent"
               style={{
-                background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)',
+                background: 'linear-gradient(135deg, rgba(30,58,138,0.88) 0%, rgba(96,165,250,0.88) 100%), url("/src/images/bghd.jpg") center/cover no-repeat',
                 animation: ctaInView ? 'ctaReveal 0.8s both ease-out' : 'none',
                 opacity: ctaInView ? undefined : 0,
               }}
             >
               <CardContent className="p-12 sm:p-16 relative">
-                {/* Subtle animated mesh */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                   <div style={{
                     position: 'absolute', inset: '-50%',
@@ -424,25 +426,27 @@ export function Home() {
                 </div>
                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20" />
 
-                <div className="relative z-10 text-center max-w-3xl mx-auto text-white">
+                <div className="relative z-10 text-center max-w-3xl mx-auto">
                   <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/15 border border-white/20 backdrop-blur-sm">
                     <div className="badge-dot w-2 h-2 bg-green-400" />
-                    <span className="text-sm font-medium">Applications open now</span>
+                    <span className="text-sm font-medium text-white">Applications open now</span>
                   </div>
-                  <h2 className="text-3xl sm:text-5xl font-extrabold mb-4 leading-tight">Ready to Get Started?</h2>
-                  <p className="text-lg text-blue-100 mb-10 max-w-xl mx-auto leading-relaxed">
+                  <h2 className="text-3xl sm:text-5xl font-extrabold mb-4 leading-tight text-white">
+                    Ready to Get Started?
+                  </h2>
+                  <p className="text-lg mb-10 max-w-xl mx-auto leading-relaxed text-white/90">
                     Join our community today and experience the benefits of cooperative banking — built for people, not profit.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <Button asChild size="lg" className="cta-btn-primary bg-white text-primary hover:bg-blue-50 shadow-xl rounded-xl font-bold px-8">
+                    <Button asChild size="lg" className="cta-btn-primary bg-white !text-primary hover:bg-blue-50 shadow-xl rounded-xl font-bold px-8">
                       <Link to="/membership/apply">
                         Apply for Membership
                         <ArrowRight className="ml-2 w-5 h-5" />
                       </Link>
                     </Button>
-                    <Button asChild size="lg" variant="outline" className="cta-btn-secondary border-white/30 text-white rounded-xl font-semibold px-8 backdrop-blur-sm">
-                      <Link to="/contact">Contact Us</Link>
-                    </Button>
+                    <Button asChild size="lg" variant="outline" className="cta-btn-secondary bg-transparent border-white/40 !text-white hover:!text-white hover:bg-white/15 rounded-xl font-semibold px-8 backdrop-blur-sm !bg-transparent">
+  <Link to="/contact">Contact Us</Link>
+</Button>
                   </div>
                 </div>
               </CardContent>

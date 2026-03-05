@@ -217,9 +217,9 @@ export function Deposits() {
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm rounded-xl">
-                    <Link to="/contact">Get in Touch</Link>
-                  </Button>
+                  <Button asChild size="lg" variant="outline" className="cta-btn-secondary bg-transparent border-white/40 !text-white hover:!text-white hover:bg-white/15 rounded-xl font-semibold px-8 backdrop-blur-sm !bg-transparent">
+  <Link to="/contact">Get In Touch</Link>
+</Button>
                 </div>
               </div>
             </CardContent>

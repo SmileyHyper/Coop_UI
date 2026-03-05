@@ -130,7 +130,7 @@ export function MembershipApply() {
                       <SelectTrigger className="rounded-lg"><SelectValue placeholder="Select type" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="regular">Regular Member (₱500)</SelectItem>
-                        <SelectItem value="associate">Associate Member (₱250)</SelectItem>
+                        <SelectItem value="associate">Associate Member</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -166,37 +166,6 @@ export function MembershipApply() {
                     <Input id="zipCode" {...register('zipCode', { required: true })} className="rounded-lg" />
                     {errors.zipCode && <span className="text-sm text-destructive">Required</span>}
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Employment Information */}
-            <Card className="rounded-2xl bg-card/90 backdrop-blur-sm border-border/50 shadow-sm">
-              <CardHeader><CardTitle>Employment Information</CardTitle></CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="occupation">Occupation</Label>
-                    <Input id="occupation" {...register('occupation', { required: true })} className="rounded-lg" />
-                    {errors.occupation && <span className="text-sm text-destructive">Required</span>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="employer">Employer Name</Label>
-                    <Input id="employer" {...register('employer', { required: true })} className="rounded-lg" />
-                    {errors.employer && <span className="text-sm text-destructive">Required</span>}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>Monthly Income Range</Label>
-                  <Select onValueChange={(value) => setValue('monthlyIncome', value)}>
-                    <SelectTrigger className="rounded-lg"><SelectValue placeholder="Select range" /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="below-20k">Below ₱20,000</SelectItem>
-                      <SelectItem value="20k-50k">₱20,000 - ₱50,000</SelectItem>
-                      <SelectItem value="50k-100k">₱50,000 - ₱100,000</SelectItem>
-                      <SelectItem value="above-100k">Above ₱100,000</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
               </CardContent>
             </Card>
@@ -251,36 +220,7 @@ export function MembershipApply() {
               </CardContent>
             </Card>
 
-            {/* Digital Signature */}
-            <Card className="rounded-2xl bg-card/90 backdrop-blur-sm border-border/50 shadow-sm">
-              <CardHeader>
-                <CardTitle>Digital Signature</CardTitle>
-                <p className="text-sm text-muted-foreground">Please sign in the box below using your mouse or touchscreen</p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="border-2 border-dashed border-border rounded-lg p-4 bg-muted/20">
-                  <SignatureCanvas
-                    ref={signatureRef}
-                    canvasProps={{ className: 'w-full h-40 bg-white rounded cursor-crosshair' }}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <Button type="button" variant="outline" onClick={clearSignature} className="rounded-lg">
-                    <X className="w-4 h-4 mr-2" />Clear
-                  </Button>
-                  <Button type="button" variant="secondary" onClick={saveSignature} className="rounded-lg">
-                    <CheckCircle className="w-4 h-4 mr-2" />Save Signature
-                  </Button>
-                </div>
-                {signatureData && (
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <CheckCircle className="w-4 h-4" />
-                    Signature saved successfully
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
+        
             {/* Submit */}
             <div className="flex justify-end gap-4 pb-4">
               <Button
