@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   # COOP Website
 
@@ -9,3 +10,6 @@
 
   Run `npm run dev` to start the development server.
   
+=======
+# Coop_UI
+>>>>>>> db9d2747dad1ca2b1053fcee88f5a8930f20265b
